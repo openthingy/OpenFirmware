@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "Ethernet.h"
 #include "OTA.h"
 #include "Program.h"
@@ -17,14 +18,17 @@ void setup() {
   OTA_setup(); // Setup OTA
   Prog_setup(); // Setup Program Sketch
 
+  uint8_t MAC[6];
+  ETH.macAddress(MAC);
+
   // TODO: Print device information
-  Serial.println("Hostname: " + Hostname);
+  // Serial.println("Hostname: " + makehostname());
   Serial.println("MAC Address: " + MAC[0] + 'x' + MAC[1] + 'x' + MAC[2] + 'x' + MAC[3] + 'x' + MAC[4] + 'x' + MAC[5] + 'x');
   Serial.println("Local IP: " + ETH.localIP());
 
 }
 
 void loop() {
-  ArduinoOTA.handle();
-  Prog_loop();
+  OTA_loop(); // Handle OTA
+  Prog_loop(); // Run program
 }

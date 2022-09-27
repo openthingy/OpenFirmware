@@ -1,18 +1,29 @@
+#include <Arduino.h>
 #include "Ethernet.h"
 #include <ETH.h> // Includes <WiFI> 
-#include <String.h>
 
+
+void makehostname(char* hostname, int length) {
+  uint8_t MAC[6];
+  ETH.macAddress(MAC);
+  // Set hostname variable
+  String _hostname = String("OpenThingy-") + MAC[0] + 'x' + MAC[1] + 'x' + MAC[2] + 'x' + MAC[3] + 'x' + MAC[4] + 'x' + MAC[5] + 'x';
+  // Set hostname
+  if (length >= _hostname.length() + 1) {
+    _hostname.toCharArray(hostname, length);
+  } else { /** ERROR */ }
+}
 
 void WiFiEvent(WiFiEvent_t event) {
   switch (event) {
 
     case ARDUINO_EVENT_ETH_START:
       Serial.println("ETH Started");
-      ETH.macAddress(MAC);
-      String _hostname = "OpenThingy-" + MAC[0] + 'x' + MAC[1] + 'x' + MAC[2] + 'x' + MAC[3] + 'x' + MAC[4] + 'x' + MAC[5] + 'x';
-      if (Hostname.length() == 0) { Hostname = _hostname; }
-      ETH.setHostname(Hostname); // Defined in Ethernet.h
-      Serial.println("Hostname: "+_hostname);
+      // Set hostname
+      char hostname[30];
+      makehostname(hostname, 30);
+      ETH.setHostname(hostname);
+      // Serial.println("Hostname: " + Hostname);
       break;
 
     case ARDUINO_EVENT_ETH_CONNECTED:

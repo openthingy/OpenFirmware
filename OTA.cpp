@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "OTA.h"
 #include "Ethernet.h"
 
@@ -28,8 +29,10 @@ void OTA_setup() {
   // Port defaults to 3232
   ArduinoOTA.setPort(3232); // Make user configurable
 
-  // Hostname defaults to esp3232-[MAC]
-  ArduinoOTA.setHostname(Hostname);
+  // Hostname defaults to OpenThingy-[MAC]
+  char hostname[30];
+  makehostname(hostname, 30);
+  ArduinoOTA.setHostname(hostname);
 
   // No authentication by default
   // ArduinoOTA.setPassword("admin");
@@ -69,4 +72,8 @@ void OTA_setup() {
   Serial.println("Ready");
   Serial.print("IP address: ");
   Serial.println(ETH.localIP());
+}
+
+void OTA_loop() {
+  ArduinoOTA.handle();
 }
