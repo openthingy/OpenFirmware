@@ -1,0 +1,9 @@
+[
+	{
+		"id": 0, // Unique 32 bit device ID set by the server
+		"mac": [0,0,0,0,0,0],
+		"static_ip": [0,0,0,0],
+		"server": [0,0,0,0],
+		"backup_server": [0,0,0,0]
+	}
+]

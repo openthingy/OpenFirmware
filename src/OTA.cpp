@@ -1,6 +1,7 @@
 #include <Arduino.h>
+#include "Log.h"
 #include "OTA.h"
-#include "Ethernet.h"
+#include "Network.h"
 
 #include <ETH.h> // Includes <WiFI>
 #include <ESPmDNS.h>
@@ -11,19 +12,19 @@
 // const char* ssid = "..........";
 // const char* password = "..........";
 
-void OTA_setup() {
+void ota_setup() {
   // TODO: Add support for wifi or ethernet
   // WiFi.mode(WIFI_STA);
   // WiFi.begin(ssid, password);
   // while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-  //   Serial.println("Connection Failed! Rebooting...");
+  //   sys_log("network: wifi connection failed! rebooting...");
   //   delay(5000);
   //   ESP.restart();
   // }
   while(!eth_connected) {
-    Serial.println("Ethernet Connection Failed! Rebooting...");
+    sys_log("network: ethernet connection failed! rebooting...");
     delay(5000); // Remove in production
-    ESP.restart();    
+    ESP.restart();
   }
 
   // Port defaults to 3232
@@ -74,6 +75,6 @@ void OTA_setup() {
   Serial.println(ETH.localIP());
 }
 
-void OTA_loop() {
+void ota_loop() {
   ArduinoOTA.handle();
 }
